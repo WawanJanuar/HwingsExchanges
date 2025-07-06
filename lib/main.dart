@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hwing_exchange/controller/providerData.dart';
 import 'package:hwing_exchange/model/marketmodel.dart';
 import 'package:hwing_exchange/screen/Portofolio.dart';
+import 'package:hwing_exchange/screen/future.dart';
 import 'package:hwing_exchange/screen/homePage-2.dart';
 import 'package:hwing_exchange/screen/marketview.dart';
 import 'package:hwing_exchange/screen/tradeview.dart';
@@ -57,6 +58,7 @@ class _RootNavigationState extends State<RootNavigation> {
         changePercent: 2.34,
       ),
     ),
+    const FuturePage(),
     const Portofolio(),
   ];
 
@@ -115,6 +117,10 @@ class _RootNavigationState extends State<RootNavigation> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.swap_horiz),
                   label: 'Perdagangan',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.swap_vert_circle_outlined),
+                  label: 'Future',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.account_balance_wallet),
