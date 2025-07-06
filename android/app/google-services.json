@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1047803086118",
+    "project_id": "hawing-app",
+    "storage_bucket": "hawing-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047803086118:android:bc57944dc572cbbb086de7",
+        "android_client_info": {
+          "package_name": "com.example.hwing_exchange"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0fwSDl3i9A668PJvgOZlcdIxyHzT42hk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047803086118:android:beff16a40deb3774086de7",
+        "android_client_info": {
+          "package_name": "com.example.uas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0fwSDl3i9A668PJvgOZlcdIxyHzT42hk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
