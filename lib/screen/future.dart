@@ -263,7 +263,7 @@ class FuturePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                   Expanded(
                     child: ListView(
                       children: const [

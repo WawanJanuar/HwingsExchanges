@@ -3,7 +3,7 @@ import 'package:hwing_exchange/model/marketmodel.dart';
 
 class TradeView extends StatefulWidget {
   final Marketmodel? coin;
-  const TradeView({Key? key, required this.coin}) : super(key: key);
+  const TradeView({super.key, required this.coin});
 
   @override
   State<TradeView> createState() => _TradeViewState();

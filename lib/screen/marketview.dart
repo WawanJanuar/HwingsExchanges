@@ -196,8 +196,9 @@ class _Tugas3State extends State<Tugas3> {
   String _formatVolume(String volume) {
     try {
       final v = double.parse(volume);
-      if (v >= 1_000_000_000)
+      if (v >= 1_000_000_000) {
         return "${(v / 1_000_000_000).toStringAsFixed(1)}B";
+      }
       if (v >= 1_000_000) return "${(v / 1_000_000).toStringAsFixed(1)}M";
       if (v >= 1_000) return "${(v / 1_000).toStringAsFixed(1)}K";
       return v.toStringAsFixed(0);

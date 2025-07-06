@@ -193,7 +193,7 @@ class _PortofolioState extends State<Portofolio> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      "\$${valuation}",
+                                      "\$$valuation",
                                       style: const TextStyle(
                                         color: Colors.white60,
                                         fontSize: 12,

@@ -9,9 +9,9 @@ class Portoctrl {
         "https://684aa138165d05c5d359a01d.mockapi.io/hwingsPorto",
       );
       List<dynamic> data = respon.data;
-      List<Hwingsport> data_respon =
+      List<Hwingsport> dataRespon =
           data.map((item) => Hwingsport.fromJson(item)).toList();
-      return data_respon;
+      return dataRespon;
     } on DioException catch (e) {
       print(e.message);
       return [];
