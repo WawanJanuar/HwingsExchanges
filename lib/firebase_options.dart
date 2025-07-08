@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'hawing-app.firebasestorage.app',
     measurementId: 'G-E5E7E7711X',
   );
+
 }

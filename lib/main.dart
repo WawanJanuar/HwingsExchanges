@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hwing_exchange/controller/futurecontroller.dart';
 import 'package:hwing_exchange/controller/providerData.dart';
 import 'package:hwing_exchange/model/marketmodel.dart';
 import 'package:hwing_exchange/screen/Portofolio.dart';
@@ -17,7 +18,10 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => TokenProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => TokenProvider()),
+        ChangeNotifierProvider(create: (_) => FutureController()),
+      ],
       child: const MyApp(),
     ),
   );
