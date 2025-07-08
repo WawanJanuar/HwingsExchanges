@@ -14,6 +14,7 @@ class _Tugas3State extends State<Tugas3> {
   final MarketController controller = MarketController();
   List<Marketmodel> allCoins = [];
   int selectedTab = 0;
+
   final List<String> tabs = ['Tren', 'Kapitalisasi Pasar', 'Gainers', 'Losers'];
 
   @override
@@ -23,9 +24,14 @@ class _Tugas3State extends State<Tugas3> {
   }
 
   Future<void> _loadData() async {
-    await controller.initializeDefaultDataIfNeeded();
-    final data = await controller.fetchData();
-    setState(() => allCoins = data);
+    // Ambil dari cache dulu
+    final local = await controller.getLocalCoins();
+    if (mounted) setState(() => allCoins = local);
+
+    // Ambil dari API, dan update tampilan
+    final updated = await controller.fetchAndCacheData();
+    if (mounted) setState(() => allCoins = updated);
+    // setState(() => allCoins = data);
   }
 
   void showEditCoinDialog(Marketmodel coin) {
@@ -41,8 +47,8 @@ class _Tugas3State extends State<Tugas3> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Color(0xFF2C225C),
-          title: Text("Edit Coin", style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color(0xFF2C225C),
+          title: const Text("Edit Coin", style: TextStyle(color: Colors.white)),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -57,7 +63,10 @@ class _Tugas3State extends State<Tugas3> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("Batal", style: TextStyle(color: Colors.white70)),
+              child: const Text(
+                "Batal",
+                style: TextStyle(color: Colors.white70),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -69,16 +78,17 @@ class _Tugas3State extends State<Tugas3> {
                   coin.changePercent = double.parse(
                     changePercentController.text,
                   );
+
                   await controller.updateCoin(coin);
                   _loadData();
                   Navigator.pop(context);
                 } catch (_) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Format input salah.")),
+                    const SnackBar(content: Text("Format input salah.")),
                   );
                 }
               },
-              child: Text("Simpan"),
+              child: const Text("Simpan"),
             ),
           ],
         );
@@ -89,14 +99,14 @@ class _Tugas3State extends State<Tugas3> {
   Widget _buildDialogTextField(String label, TextEditingController controller) {
     return TextField(
       controller: controller,
-      style: TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white),
-        enabledBorder: UnderlineInputBorder(
+        labelStyle: const TextStyle(color: Colors.white),
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.white38),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.cyanAccent),
         ),
       ),
@@ -113,15 +123,15 @@ class _Tugas3State extends State<Tugas3> {
       },
       child: Center(
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 580),
+          constraints: const BoxConstraints(maxWidth: 580),
           child: Card(
             color: const Color(0xFF2C225C),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Padding(
-              padding: EdgeInsets.all(14),
+              padding: const EdgeInsets.all(14),
               child: Row(
                 children: [
                   CircleAvatar(
@@ -129,12 +139,12 @@ class _Tugas3State extends State<Tugas3> {
                     radius: 20,
                     backgroundColor: Colors.white,
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Expanded(
                     flex: 2,
                     child: Text(
                       data.asset_Name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
@@ -145,7 +155,10 @@ class _Tugas3State extends State<Tugas3> {
                     flex: 2,
                     child: Text(
                       _formatVolume(data.volume24h),
-                      style: TextStyle(color: Colors.white70, fontSize: 12),
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -156,7 +169,7 @@ class _Tugas3State extends State<Tugas3> {
                       children: [
                         Text(
                           "\$${data.price.toStringAsFixed(2)}",
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                         Text(
                           "${data.changePercent.toStringAsFixed(2)}%",
@@ -172,11 +185,11 @@ class _Tugas3State extends State<Tugas3> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.edit, color: Colors.orangeAccent),
+                    icon: const Icon(Icons.edit, color: Colors.orangeAccent),
                     onPressed: () => showEditCoinDialog(data),
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete, color: Colors.redAccent),
+                    icon: const Icon(Icons.delete, color: Colors.redAccent),
                     onPressed: () async {
                       if (data.id != null) {
                         await controller.deleteCoin(data.id!);
@@ -196,9 +209,8 @@ class _Tugas3State extends State<Tugas3> {
   String _formatVolume(String volume) {
     try {
       final v = double.parse(volume);
-      if (v >= 1_000_000_000) {
+      if (v >= 1_000_000_000)
         return "${(v / 1_000_000_000).toStringAsFixed(1)}B";
-      }
       if (v >= 1_000_000) return "${(v / 1_000_000).toStringAsFixed(1)}M";
       if (v >= 1_000) return "${(v / 1_000).toStringAsFixed(1)}K";
       return v.toStringAsFixed(0);
@@ -216,7 +228,7 @@ class _Tugas3State extends State<Tugas3> {
   Widget buildTabs() {
     return Container(
       height: 40,
-      margin: EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: tabs.length,
@@ -225,11 +237,11 @@ class _Tugas3State extends State<Tugas3> {
           return GestureDetector(
             onTap: () => setState(() => selectedTab = index),
             child: Container(
-              margin: EdgeInsets.only(right: 16),
-              padding: EdgeInsets.symmetric(horizontal: 12),
+              margin: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration:
                   isActive
-                      ? BoxDecoration(
+                      ? const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
                             color: Colors.cyanAccent,
@@ -272,9 +284,9 @@ class _Tugas3State extends State<Tugas3> {
 
     return Column(
       children: [
-        SizedBox(height: 8),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 5),
+        const SizedBox(height: 8),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 5),
           child: Text(
             'Peringkat',
             style: TextStyle(
@@ -284,7 +296,7 @@ class _Tugas3State extends State<Tugas3> {
             ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         buildTabs(),
         Expanded(
           child: ListView.builder(
@@ -305,7 +317,7 @@ class _Tugas3State extends State<Tugas3> {
         toolbarHeight: 90,
         title: TextField(
           onChanged: (value) async {
-            final coins = await controller.fetchData();
+            final coins = await controller.fetchAndCacheData();
             setState(() {
               allCoins =
                   coins
@@ -317,18 +329,21 @@ class _Tugas3State extends State<Tugas3> {
                       .toList();
             });
           },
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: Colors.white),
+            prefixIcon: const Icon(Icons.search, color: Colors.white),
             hintText: 'Search...',
-            hintStyle: TextStyle(color: Colors.white54),
+            hintStyle: const TextStyle(color: Colors.white54),
             filled: true,
-            fillColor: Color(0xFF2C225C),
+            fillColor: const Color(0xFF2C225C),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: BorderSide.none,
             ),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 20,
+            ),
           ),
         ),
       ),
