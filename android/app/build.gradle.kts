@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.example.hwing_exchange"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973" // ✅ Sesuai kebutuhan Firebase
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -23,18 +23,15 @@ android {
     }
 
     defaultConfig {
-    applicationId "com.example.hwing_exchange"
-    minSdkVersion 21
-    targetSdkVersion flutter.targetSdkVersion
-    versionCode flutter.versionCode
-    versionName flutter.versionName
-}
-
+        applicationId = "com.example.hwing_exchange"
+        minSdk = 23 // ✅ Wajib minimal 23 karena firebase-auth
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
 
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+        getByName("release") {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -44,4 +41,4 @@ flutter {
     source = "../.."
 }
 
-apply plugin: 'com.google.gms.google-services'
+apply(plugin = "com.google.gms.google-services")
